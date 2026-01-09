@@ -1,7 +1,1 @@
-{
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
-}
+{ "compilerOptions": { "skipLibCheck": true, "noImplicitAny": false, "allowJs": true, "target": "ESNext", "module": "ESNext", "moduleResolution": "node", "jsx": "react-jsx", "esModuleInterop": true } }
