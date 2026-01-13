@@ -3,15 +3,13 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './App.css';
 
-// Ensure the 'root' element exists in your index.html
+// Locate the root element in your index.html
 const rootElement = document.getElementById('root');
 
-if (!rootElement) {
-  throw new Error("Failed to find the root element. Ensure index.html has <div id='root'></div>");
+if (rootElement) {
+  // Create the root and render the App directly
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(<App />);
+} else {
+  console.error("Critical Error: Could not find the root element in index.html.");
 }
-
-ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
