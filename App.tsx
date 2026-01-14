@@ -1,77 +1,131 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import './App.css';
 
-const App = () => {
+export default function App() {
+  const [page, setPage] = useState('home');
   const [duration, setDuration] = useState(90);
 
+  const goTo = (p: string) => { setPage(p); window.scrollTo(0, 0); };
+
   return (
-    <Router>
-      <div className="min-h-screen bg-black text-white selection:bg-purple-500">
-        <Routes>
-          {/* PAGE 1: SPLASH */}
-          <Route path="/" element={
-            <div className="h-screen flex flex-col items-center justify-center relative">
-              <div className="ocean-video-container"><video autoPlay loop muted className="ocean-video"><source src="https://assets.mixkit.co/videos/preview/mixkit-ocean-waves-in-the-sunset-4119-large.mp4" /></video></div>
-              <h1 className="relative z-10 text-7xl mb-8">MANDASTRONG STUDIO</h1>
-              <div className="relative z-10 flex gap-6">
-                <Link to="/pricing" className="border-4 border-purple-600 px-12 py-3 hover:bg-purple-600 transition-all">GET STARTED</Link>
-              </div>
-            </div>
-          } />
+    <div className="min-h-screen bg-black text-white font-black italic">
+      
+      {/* PAGE 1: SPLASH */}
+      {page === 'home' && (
+        <div className="h-screen flex flex-col items-center justify-center relative overflow-hidden">
+          <div className="ocean-video-container">
+            <video autoPlay loop muted playsInline className="ocean-video">
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-ocean-waves-in-the-sunset-4119-large.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <h1 className="relative z-10 text-6xl md:text-9xl mb-8 text-center drop-shadow-2xl">MANDASTRONG STUDIO</h1>
+          <button onClick={() => goTo('pricing')} className="relative z-10 border-4 border-purple-600 px-16 py-4 text-3xl hover:bg-purple-600 transition-all">GET STARTED</button>
+        </div>
+      )}
 
-          {/* PAGE 3: PRICING */}
-          <Route path="/pricing" element={
-            <div className="p-12 text-center">
-              <h2 className="text-6xl mb-16">CHOOSE YOUR PLAN</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-                <div className="border-4 border-purple-600 p-10"><h3 className="text-4xl">BONUS</h3><div className="text-5xl my-6">$10</div><button className="w-full bg-purple-600 py-3">SELECT</button></div>
-                <div className="border-4 border-white p-10 bg-purple-600"><h3 className="text-4xl">PRO</h3><div className="text-5xl my-6">$20</div><button className="w-full bg-black py-3">SELECT</button></div>
-                <div className="border-4 border-purple-600 p-10"><h3 className="text-4xl">STUDIO</h3><div className="text-5xl my-6">$30</div><button className="w-full bg-purple-600 py-3">SELECT</button></div>
-              </div>
-              <Link to="/editor" className="mt-16 inline-block text-2xl text-purple-500">CONTINUE TO EDITOR →</Link>
+      {/* PAGE 3: PRICING ($20, $40, $80) */}
+      {page === 'pricing' && (
+        <div className="p-10 text-center">
+          <h2 className="text-6xl mb-16 underline decoration-purple-600 uppercase">Pricing Plans</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div className="border-4 border-purple-600 p-10">
+              <h3 className="text-4xl">BASIC</h3>
+              <div className="text-6xl my-6 text-purple-500">$20</div>
+              <button onClick={() => goTo('editor')} className="w-full bg-purple-600 py-4 text-2xl font-bold">SELECT</button>
             </div>
-          } />
+            <div className="border-8 border-white p-10 bg-purple-600">
+              <h3 className="text-4xl text-black">PRO</h3>
+              <div className="text-6xl my-6 text-white">$40</div>
+              <button onClick={() => goTo('editor')} className="w-full bg-black py-4 text-2xl font-bold">SELECT</button>
+            </div>
+            <div className="border-4 border-purple-600 p-10">
+              <h3 className="text-4xl">STUDIO</h3>
+              <div className="text-6xl my-6 text-purple-500">$80</div>
+              <button onClick={() => goTo('editor')} className="w-full bg-purple-600 py-4 text-2xl font-bold">SELECT</button>
+            </div>
+          </div>
+        </div>
+      )}
 
-          {/* PAGE 11: EDITOR SUITE */}
-          <Route path="/editor" element={
-            <div className="p-8">
-              <h2 className="text-5xl mb-8">EDITOR SUITE</h2>
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                <div className="lg:col-span-3 border-4 border-purple-600 p-6">
-                  <div className="aspect-video bg-gray-900 mb-6 flex items-center justify-center text-3xl">PREVIEW</div>
-                  <div className="flex gap-6">
-                    <Link to="/timeline" className="border-2 border-purple-600 px-6 py-2">TIMELINE</button>
-                    <button className="border-2 border-purple-600 px-6 py-2">MEDIA</button>
-                    <button className="bg-purple-600 px-8 py-2 text-white">OPEN ENHANCEMENT STUDIO</button>
-                  </div>
-                </div>
-                <div className="border-4 border-purple-600 p-6">
-                  <h3 className="text-2xl mb-6">QUICK TOOLS</h3>
-                  {['CUT', 'TRIM', 'SPLIT', 'MERGE'].map(t => <button key={t} className="w-full border-2 border-purple-600 mb-4 py-2 hover:bg-purple-600">{t}</button>)}
-                </div>
+      {/* PAGE 11: ORIGINAL EDITOR SUITE */}
+      {page === 'editor' && (
+        <div className="p-8">
+          <div className="flex justify-between items-center mb-8 border-l-8 border-purple-600 pl-4">
+            <h2 className="text-5xl uppercase">Editor Suite</h2>
+            <button onClick={() => goTo('media')} className="bg-white text-black px-8 py-3 font-bold uppercase hover:bg-purple-600 hover:text-white transition-colors">Media Library</button>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="lg:col-span-3 border-4 border-purple-600 p-6 bg-zinc-900">
+              <div className="aspect-video bg-black mb-6 flex items-center justify-center border-2 border-zinc-700">
+                <span className="text-4xl opacity-50">VIDEO PREVIEW</span>
+              </div>
+              <div className="flex gap-4">
+                <button className="border-2 border-purple-600 px-8 py-2">TIMELINE</button>
+                <button className="border-2 border-purple-600 px-8 py-2">AUDIO</button>
               </div>
             </div>
-          } />
+            <div className="border-4 border-purple-600 p-6 bg-black">
+              <h3 className="text-2xl mb-6 underline decoration-purple-600 uppercase">Tools</h3>
+              {['CUT', 'TRIM', 'SPLIT', 'FX'].map(t => (
+                <button key={t} className="w-full border-2 border-purple-600 mb-4 py-3">{t}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
-          {/* PAGE 13: 180-MIN SLIDER */}
-          <Route path="/timeline" element={
-            <div className="p-12 max-w-5xl mx-auto text-center">
-              <h2 className="text-5xl mb-12">TIMELINE PREVIEW</h2>
-              <div className="bg-gray-900 h-80 border-4 border-purple-600 flex items-center justify-center mb-12"><span className="text-8xl text-purple-600">▶</span></div>
-              <div className="border-4 border-purple-600 p-10">
-                <h3 className="text-3xl mb-6">MOVIE DURATION</h3>
-                <div className="text-7xl text-purple-600 mb-8 font-black">{duration} MINUTES</div>
-                <input type="range" min="0" max="180" value={duration} onChange={(e) => setDuration(parseInt(e.target.value))} className="w-full h-6 rounded-lg appearance-none cursor-pointer" />
-                <div className="flex justify-between mt-4 text-xl"><span>0 MIN</span><span>180 MIN</span></div>
-              </div>
-              <Link to="/editor" className="mt-12 inline-block text-purple-500">← BACK TO EDITOR</Link>
+      {/* MEDIA LIBRARY PAGE (With Open Enhancement Editor Button Top-Right) */}
+      {page === 'media' && (
+        <div className="p-8">
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-5xl border-l-8 border-purple-600 pl-4 uppercase">Media Library</h2>
+            <div className="flex gap-4">
+               <button onClick={() => goTo('enhancement-editor')} className="bg-purple-600 border-2 border-white px-8 py-3 text-xl font-bold hover:scale-105 transition-transform uppercase">
+                 Open Enhancement Editor
+               </button>
+               <button onClick={() => goTo('editor')} className="border-2 border-white px-8 py-3 text-xl font-bold">BACK</button>
             </div>
-          } />
-        </Routes>
-      </div>
-    </Router>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[1,2,3,4,5,6,7,8].map(i => (
+              <div key={i} className="aspect-square bg-zinc-900 border-2 border-purple-600 flex items-center justify-center text-6xl">🎬</div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ENHANCEMENT EDITOR (All Tools + 180-min Slider) */}
+      {page === 'enhancement-editor' && (
+        <div className="p-10 max-w-6xl mx-auto text-center animate-in slide-in-from-bottom duration-500">
+          <h2 className="text-6xl mb-12 text-purple-600 uppercase underline decoration-white">Enhancement Editor</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12 text-left">
+            <div className="border-4 border-purple-600 p-8 bg-zinc-950">
+              <h3 className="text-3xl mb-6 border-b border-purple-600">ALL AI ENHANCEMENTS</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {['UPSCALER', 'COLOR-FIX', 'NOISE-REDUCTION', 'FACE-RETOUCH', 'STABILIZE', 'LIGHT-GEN', 'AI-VOICE', 'SUBTITLE-GEN'].map(tool => (
+                  <button key={tool} className="border border-purple-600 py-3 text-xs font-bold hover:bg-purple-600">{tool}</button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="border-4 border-purple-600 p-8 bg-zinc-950 flex flex-col justify-center text-center">
+              <h3 className="text-3xl mb-4 uppercase">Duration Enhancement</h3>
+              <div className="text-8xl text-purple-600 mb-8 font-black tracking-tighter">{duration} <span className="text-3xl text-white">MIN</span></div>
+              <input 
+                type="range" min="0" max="180" value={duration} 
+                onChange={(e) => setDuration(parseInt(e.target.value))} 
+                className="w-full h-10 bg-zinc-800 rounded-full appearance-none cursor-pointer accent-purple-600"
+              />
+              <div className="flex justify-between mt-6 text-xl font-bold opacity-50">
+                <span>0 MIN</span>
+                <span>180 MIN</span>
+              </div>
+            </div>
+          </div>
+          <button onClick={() => goTo('media')} className="text-2xl border-4 border-white px-12 py-4 hover:bg-white hover:text-black transition-all">EXIT ENHANCEMENT STUDIO</button>
+        </div>
+      )}
+
+    </div>
   );
-};
-
-export default App;
+}
