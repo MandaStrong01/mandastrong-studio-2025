@@ -1,1 +1,22 @@
-node_modules/App.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ocean-video-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  overflow: hidden; z-index: 0;
+}
+.ocean-video {
+  min-width: 100%; min-height: 100%;
+  object-fit: cover; opacity: 0.4;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 44px; width: 44px;
+  border-radius: 50%;
+  background: #8a2be2;
+  border: 4px solid white;
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+}
