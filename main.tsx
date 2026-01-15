@@ -1,8 +1,7 @@
-import ReactDOM from 'react-dom/client';
-import App from './App'; // Removed .tsx extension to let the compiler handle it
-import './App.css';
+import { createRoot } from 'react-dom/client';
+import App from './App.tsx';
 
-// Using a non-null assertion (!) to tell the compiler the root exists
-const rootElement = document.getElementById('root')!;
-
-ReactDOM.createRoot(rootElement).render(<App />);
+// Removed StrictMode to prevent deployment and video-bg initialization failures
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(<App />);
