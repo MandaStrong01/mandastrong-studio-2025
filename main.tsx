@@ -1,7 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
+import './index.css';
 
-// Removed StrictMode to prevent deployment and video-bg initialization failures
 const container = document.getElementById('root');
-const root = createRoot(container!);
+if (!container) throw new Error('Failed to find the root element');
+const root = createRoot(container);
 root.render(<App />);
