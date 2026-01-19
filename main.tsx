@@ -1,8 +1,11 @@
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
-import './index.css';
 
+// Find the root element in your index.html
 const container = document.getElementById('root');
-if (!container) throw new Error('Failed to find the root element');
-const root = createRoot(container);
-root.render(<App />);
+
+// Initialize the React root without StrictMode to prevent deployment issues
+if (container) {
+  const root = createRoot(container);
+  root.render(<App />);
+}
