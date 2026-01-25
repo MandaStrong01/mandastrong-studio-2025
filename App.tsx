@@ -1,168 +1,127 @@
 import React, { useState } from 'react';
+import { 
+  ChevronRight, ChevronLeft, Sparkles, Zap, Wand2, 
+  Monitor, ShieldCheck, ListFilter, Film, CreditCard, 
+  Activity, Settings, User, Play, Save, Share2, Trash2,
+  Image, Music, Video, Type, Layers, Palette
+} from 'lucide-react';
 
-const CSS = `
-  body { margin: 0; background: #000; color: #fff; font-family: 'Arial Black', sans-serif; text-transform: uppercase; overflow-x: hidden; }
-  
-  /* MATCHING YOUR IMAGE: FULL-BLEED OCEAN BACKGROUND */
-  .video-bg { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; }
-  
-  /* MATCHING YOUR IMAGE: PRECISE TITLE PLACEMENT & COLOR */
-  .hero-title { 
-    font-size: 8.5vw; 
-    margin-bottom: 5px; 
-    color: #000; /* Dark text exactly like IMG_1305.PNG */
-    letter-spacing: 1px; 
-    font-weight: 900; 
-    text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
-  }
-
-  .hero-subtitle { 
-    font-size: 2.8vw; 
-    color: #000; /* Dark text exactly like IMG_1305.PNG */
-    font-style: italic; 
-    margin-bottom: 60px; 
-    font-weight: bold; 
-  }
-
-  /* MATCHING YOUR IMAGE: THREE BLACK BUTTONS WITH ROUNDED CORNERS */
-  .button-container { display: flex; gap: 25px; justify-content: center; margin-top: 20px; }
-  .black-btn { 
-    background: #000; 
-    color: #fff; 
-    border: none; 
-    padding: 18px 45px; 
-    border-radius: 12px; 
-    font-size: 1.6rem; 
-    cursor: pointer; 
-    font-weight: bold; 
-    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    text-transform: none; 
-  }
-  .black-btn:hover { background: #333; transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-
-  /* REMAINING 21-PAGE FUNCTIONAL STYLES */
-  .nav-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; border-bottom: 3px solid #00f2ff; background: rgba(0,0,0,0.9); position: sticky; top: 0; z-index: 100; }
-  .cyan-glow { color: #00f2ff; text-shadow: 0 0 10px rgba(0, 242, 255, 0.8); }
-  .manda-slider { -webkit-appearance: none; width: 100%; height: 20px; background: #111; border: 2px solid #00f2ff; outline: none; border-radius: 15px; }
-  .manda-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 45px; height: 45px; background: #00f2ff; border: 3px solid #fff; cursor: pointer; border-radius: 50%; box-shadow: 0 0 15px #00f2ff; }
-  .footer { position: fixed; bottom: 0; left: 0; width: 100%; padding: 18px; background: rgba(0,0,0,0.95); border-top: 4px solid #00f2ff; text-align: center; font-size: 0.9rem; z-index: 1000; font-weight: bold; letter-spacing: 1px; }
-`;
-
-export default function App() {
+const App = () => {
   const [page, setPage] = useState(1);
-  const [duration, setDuration] = useState(90);
-  const [exportOpen, setExportOpen] = useState(false);
+  const [showQuickMenu, setShowQuickMenu] = useState(false);
 
-  const nav = (n: number) => { 
-    setPage(n); 
-    window.scrollTo(0,0); 
-    setExportOpen(false); 
+  // --- NAVIGATION CONTROLS ---
+  const handleNext = () => setPage((p) => Math.min(p + 1, 21));
+  const handleBack = () => setPage((p) => Math.max(p - 1, 1));
+  const jumpToPage = (pageNum: number) => {
+    setPage(pageNum);
+    setShowQuickMenu(false);
   };
 
   return (
-    <div style={{ minHeight: '100vh', paddingBottom: '140px' }}>
-      <style>{CSS}</style>
+    <div className="min-h-screen bg-black text-white flex flex-col font-sans selection:bg-purple-500/30">
+      
+      {/* HEADER: MANDASTRONG BRANDING */}
+      <header className="p-4 border-b border-purple-900/50 bg-black/90 backdrop-blur-md flex justify-between items-center sticky top-0 z-50">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl flex items-center justify-center font-black italic shadow-lg shadow-purple-500/20">M</div>
+          <div>
+            <h1 className="text-2xl font-black italic tracking-tighter uppercase leading-none">MandaStrong</h1>
+            <p className="text-[10px] font-bold text-purple-400 tracking-[0.3em] uppercase">Studio 2025</p>
+          </div>
+        </div>
+        <button 
+          onClick={() => setShowQuickMenu(!showQuickMenu)}
+          className="flex items-center gap-2 px-6 py-3 bg-purple-900/20 border border-purple-500/50 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-purple-600 transition-all shadow-xl"
+        >
+          <ListFilter size={14} /> Quick Access Menu
+        </button>
+      </header>
 
-      {/* PAGE 1: EXACT MATCH TO YOUR SCREENSHOT IMG_1305.PNG */}
-      {page === 1 && (
-        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-          <video autoPlay loop muted playsInline className="video-bg">
-            <source src="/background.mp4" type="video/mp4" />
-          </video>
-          <h1 className="hero-title">MANDASTRONG'S STUDIO</h1>
-          <h2 className="hero-subtitle">Welcome To The All-In-One Make-A-Movie App!</h2>
-          <div className="button-container">
-            <button className="black-btn" onClick={() => nav(3)}>Next</button>
-            <button className="black-btn" onClick={() => alert('Accessing Secure Login...')}>Login</button>
-            <button className="black-btn" onClick={() => alert('Opening Registration...')}>Register</button>
+      {/* QUICK ACCESS OVERLAY */}
+      {showQuickMenu && (
+        <div className="fixed top-24 right-6 w-80 bg-zinc-950 border-2 border-purple-600 rounded-[2.5rem] p-8 z-50 shadow-[0_0_60px_rgba(147,51,234,0.4)] animate-in fade-in slide-in-from-top-6">
+          <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-purple-400 mb-6 border-b border-purple-900 pb-4 italic">Jump To Top Pages</h4>
+          <div className="grid gap-3">
+            {[
+              { label: "Studio Landing (P1)", target: 1, icon: <Film size={14}/> },
+              { label: "Pricing Plans (P3)", target: 3, icon: <CreditCard size={14}/> },
+              { label: "AI Tool Board (P6)", target: 6, icon: <Wand2 size={14}/> },
+              { label: "Enhancement (P13)", target: 13, icon: <Sparkles size={14}/> },
+              { label: "Export & Render (P18)", target: 18, icon: <Activity size={14}/> },
+              { label: "My Profile (P20)", target: 20, icon: <User size={14}/> }
+            ].map(item => (
+              <button key={item.label} onClick={() => jumpToPage(item.target)} className="w-full text-left text-xs font-bold p-4 hover:bg-purple-900/40 rounded-2xl transition-all flex items-center gap-4 group border border-transparent hover:border-purple-500/30 text-white">
+                <span className="text-purple-500 group-hover:text-white">{item.icon}</span> {item.label}
+              </button>
+            ))}
           </div>
         </div>
       )}
 
-      {/* HEADER NAV FOR PAGES 3-21 */}
-      {page > 1 && (
-        <div className="nav-header">
-          <span className="cyan-glow" style={{fontSize: '1.3rem'}}>MANDASTRONG STUDIO v2.0</span>
-          <div style={{display:'flex', gap:'12px'}}>
-            {page === 11 && <button className="black-btn" style={{padding:'10px 20px', fontSize:'0.9rem'}} onClick={() => nav(12)}>Media Library</button>}
-            {page === 12 && <button className="black-btn" style={{padding:'10px 20px', fontSize:'0.9rem'}} onClick={() => nav(13)}>Enhancement Studio</button>}
-            <button className="black-btn" style={{padding:'10px 20px', fontSize:'0.9rem', background: '#333'}} onClick={() => nav(page - 1)}>Back</button>
-            <button className="black-btn" style={{padding:'10px 20px', fontSize:'0.9rem'}} onClick={() => nav(page + 1)}>Next</button>
+      {/* MAIN ENGINE */}
+      <main className="flex-grow flex flex-col items-center justify-center p-8 max-w-7xl mx-auto w-full relative">
+        
+        {/* PAGE 1: LANDING */}
+        {page === 1 && (
+          <div className="text-center space-y-12 animate-in zoom-in duration-1000">
+            <h2 className="text-9xl md:text-[12rem] font-black italic uppercase leading-none tracking-tighter text-white">
+              MANDA<span className="text-purple-600">STRONG</span>
+            </h2>
+            <h3 className="text-5xl font-black italic text-zinc-400 uppercase tracking-tighter">The 21-Page Movie App</h3>
+            <button onClick={handleNext} className="px-16 py-6 bg-purple-600 rounded-full font-black text-2xl shadow-[0_0_40px_rgba(147,51,234,0.5)] hover:scale-105 transition-all text-white">ENTER STUDIO</button>
           </div>
-        </div>
-      )}
+        )}
 
-      <div style={{ padding: '50px' }}>
-        {/* PAGE 3: UPDATED PRICING */}
+        {/* PAGE 3: PRICING TIERS */}
         {page === 3 && (
-          <div style={{textAlign:'center'}}>
-            <h1 className="cyan-glow">PLAN SELECTION</h1>
-            <div style={{display:'flex', gap:'40px', justifyContent:'center', marginTop:'60px'}}>
-              <div style={{border:'2px solid #333', padding:'40px', background:'#0a0a0a', width:'220px'}}><h2>BASIC</h2>$20<br/><button className="black-btn" style={{marginTop:'25px', fontSize:'1.1rem'}} onClick={()=>nav(4)}>Select</button></div>
-              <div style={{border:'5px solid #00f2ff', padding:'45px', background:'rgba(0,242,255,0.05)', width:'280px', transform:'scale(1.1)'}}><h2 className="cyan-glow">PRO</h2>$40<br/><button className="black-btn" style={{marginTop:'25px', fontSize:'1.1rem'}} onClick={()=>nav(4)}>Select</button></div>
-              <div style={{border:'2px solid #333', padding:'40px', background:'#0a0a0a', width:'220px'}}><h2>STUDIO</h2>$80<br/><button className="black-btn" style={{marginTop:'25px', fontSize:'1.1rem'}} onClick={()=>nav(4)}>Select</button></div>
-            </div>
-          </div>
-        )}
-
-        {/* PAGE 13: FUNCTIONAL 0-180 MIN SLIDER */}
-        {page === 13 && (
-          <div style={{textAlign:'center', maxWidth:'900px', margin:'0 auto'}}>
-            <div style={{border:'8px solid #00f2ff', padding:'80px', background:'rgba(0,0,0,0.9)'}}>
-              <h1 className="cyan-glow">ENHANCEMENT STUDIO</h1>
-              <div style={{fontSize:'12rem', fontWeight:'900', color:'#fff'}}>{duration} <span style={{fontSize:'2.5rem'}}>MIN</span></div>
-              <input type="range" min="0" max="180" value={duration} className="manda-slider" onChange={(e: any)=>setDuration(e.target.value)} />
-              <div style={{display:'flex', justifyContent:'space-between', marginTop:'25px', fontWeight:'bold', fontSize:'1.2rem'}}><span>0 MIN</span><span>180 MIN</span></div>
-            </div>
-          </div>
-        )}
-
-        {/* PAGE 16: 8-DESTINATION EXPORT MENU */}
-        {page === 16 && (
-          <div style={{textAlign:'center', paddingTop:'15vh'}}>
-            <h1 className="cyan-glow" style={{fontSize:'4.5rem'}}>EXPORT HUB</h1>
-            <button className="black-btn" style={{fontSize:'3.5rem', padding:'50px'}} onClick={()=>setExportOpen(true)}>EXPORT MOVIE</button>
-            {exportOpen && (
-              <div style={{position:'fixed', top:0, left:0, width:'100%', height:'100%', background:'rgba(0,0,0,0.97)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:2000}}>
-                <div style={{display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'20px', width:'550px', padding:'50px', border:'6px solid #00f2ff', background:'#000'}}>
-                  <h2 style={{gridColumn:'span 2'}} className="cyan-glow">CHOOSE DESTINATION</h2>
-                  {['YouTube','TikTok','Vimeo','Google Drive','Etsy Store','Local Disk','Cloud Sync','Studio Hub'].map(d => (
-                    <button key={d} className="black-btn" style={{fontSize:'1.1rem'}} onClick={()=>nav(17)}>{d}</button>
-                  ))}
-                  <button className="black-btn" style={{gridColumn:'span 2', background:'#444', marginTop:'15px'}} onClick={()=>setExportOpen(false)}>Cancel</button>
+          <div className="w-full space-y-16 animate-in fade-in duration-700">
+            <h3 className="text-6xl font-black italic uppercase text-center">Select Your Tier</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {[
+                { name: 'Basic', price: 20, tools: '100 AI Tools' },
+                { name: 'Pro', price: 30, tools: '300 AI Tools' },
+                { name: 'Studio', price: 50, tools: 'All 720 AI Tools' }
+              ].map((plan) => (
+                <div key={plan.name} className="p-12 border-2 border-purple-600 rounded-[4rem] bg-zinc-950 flex flex-col group hover:-translate-y-4 transition-all duration-500">
+                  <h4 className="text-3xl font-black mb-2 uppercase italic">{plan.name}</h4>
+                  <div className="text-7xl font-black mb-10 tracking-tighter">${plan.price}</div>
+                  <button className="w-full py-6 bg-purple-600 text-white rounded-[2rem] font-black uppercase tracking-[0.2em] shadow-lg shadow-purple-500/20">Select Plan</button>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* PAGE 17: AUTO-WATCH PLAYER */}
-        {page === 17 && (
-          <div style={{textAlign:'center'}}>
-            <h1 className="cyan-glow">MOVIE PREVIEW</h1>
-            <div style={{width:'100%', height:'70vh', background:'#000', border:'5px solid #00f2ff', display:'flex', alignItems:'center', justifyContent:'center'}}>
-              <h2 style={{fontSize:'3rem'}}>▶ AUTO-PLAYING CONTENT</h2>
+              ))}
             </div>
           </div>
         )}
 
-        {/* PAGE 21: FINAL THANK YOU */}
-        {page === 21 && (
-          <div style={{textAlign:'center'}}>
-            <h1 className="cyan-glow" style={{fontSize:'6rem'}}>THANK YOU</h1>
-            <div style={{display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'25px', marginTop:'40px'}}>
-              <div style={{border:'1px solid #333', padding:'25px'}}>CREDITS</div><div style={{border:'1px solid #333', padding:'25px'}}>UPDATES</div>
-              <div style={{border:'1px solid #333', padding:'25px'}}>BONUSES</div><div style={{border:'1px solid #333', padding:'25px'}}>SURVEY</div>
-              <button className="black-btn" style={{gridColumn:'span 2', background:'#8a2be2'}} onClick={()=>nav(1)}>LOG OUT</button>
+        {/* PAGE 13: THE 600+ TOOLS */}
+        {page === 13 && (
+          <div className="w-full space-y-12 animate-in slide-in-from-bottom-12 duration-700">
+            <h3 className="text-6xl font-black italic uppercase text-white">Enhancement Studio</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 max-h-[50vh] overflow-y-auto pr-4">
+              {["4K Upscaler", "Color Match", "Noise Filter", "Frame Boost", "Voice Fix", "HDR Mapper", "Lighting", "Style Gen", "Depth FX", "Face Fix", "Motion Blur", "Auto Script"].map((tool, i) => (
+                <button key={i} className="aspect-square border border-purple-900/30 bg-zinc-950 rounded-[2.5rem] hover:border-purple-500 group transition-all flex flex-col items-center justify-center gap-4">
+                  <Wand2 size={28} className="text-purple-900 group-hover:text-purple-400" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-center text-white">{tool}</span>
+                </button>
+              ))}
             </div>
           </div>
         )}
-      </div>
 
-      {/* PERMANENT FOOTER CREDITS */}
-      <div className="footer">
-        MANDASTRONG1 2025 ~ AUTHOR OF "DOXY THE SCHOOL BULLY" ~ SHOP AT MANDASTRONG1.ETSY.COM
-      </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="p-10 border-t border-purple-900/50 bg-black flex flex-col items-center gap-10">
+        <div className="flex gap-8 w-full max-w-2xl">
+          <button onClick={handleBack} className="flex-1 py-6 border-2 border-zinc-900 rounded-[2rem] font-black text-white uppercase">BACK</button>
+          <button onClick={handleNext} className="flex-1 py-5 bg-purple-600 rounded-[2rem] font-black text-white uppercase shadow-lg shadow-purple-900/50">NEXT</button>
+        </div>
+        <p className="text-[11px] font-black uppercase tracking-[0.6em] opacity-40 text-center text-white">
+          MandaStrong1 2025 ~ Author Of Doxy The School Bully ~ MandaStrong1.Etsy.com
+        </p>
+      </footer>
     </div>
   );
-}
+};
+
+export default App;
